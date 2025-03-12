@@ -2,50 +2,48 @@ package ru.hogwarts.school.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
+    private final FacultyRepository facultyRepository;
 
-    private final Map<Long, Faculty> faculties = new HashMap<>();
-
-    private static Long counter = 0L;
+    public FacultyServiceImpl(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     @Override
-    public Faculty create(Faculty faculty) {
-        Long currentId = ++counter;
-        faculty.setId(currentId);
-
-        faculties.put(currentId, faculty);
-        return faculty;
+    public Faculty create(Faculty faculty) {;
+        return facultyRepository.save(faculty);
     }
 
     @Override
     public Faculty read(Long facultyId) {
-        return faculties.get(facultyId);
+        return facultyRepository.findById(facultyId)
+                .orElse(null);
     }
 
     @Override
     public Faculty update(Long facultyId, Faculty faculty) {
-        Faculty facultyFromDb = faculties.get(facultyId);
+        Faculty facultyFromDb = facultyRepository.findById(facultyId)
+                .orElseThrow(IllegalAccessError::new);
         facultyFromDb.setName(faculty.getName());
         facultyFromDb.setColor(faculty.getColor());
 
-        return facultyFromDb;
+        return facultyRepository.save(facultyFromDb);
     }
 
     @Override
     public void delete(Long facultyId) {
-        faculties.remove(facultyId);
+        facultyRepository.deleteById(facultyId);
     }
 
     @Override
     public List<Faculty> getAllByColor(String color) {
-        return faculties.values()
+        return facultyRepository.findAll()
                 .stream()
                 .filter(it -> it.getColor().equals(color))
                 .toList();
