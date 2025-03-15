@@ -1,6 +1,9 @@
 package ru.hogwarts.school.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
@@ -12,8 +15,8 @@ import ru.hogwarts.school.service.AvatarService;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
-import static io.swagger.v3.core.util.AnnotationsUtils.getExtensions;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
@@ -43,6 +46,14 @@ public class AvatarServiceImpl implements AvatarService {
     @Override
     public Avatar findAvatarById(Long avatarId) {
         return avatarRepository.findById(avatarId).orElseThrow();
+    }
+
+    @Override
+    public List<Avatar> getPaginatedAvatars(int pageNumber, int pageSize) {
+
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        Page<Avatar> avatarPage = avatarRepository.findAll(pageable);
+        return avatarPage.getContent();
     }
 
     private Path saveToDisk(Long studentId, MultipartFile avatarFile) throws IOException {

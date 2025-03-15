@@ -16,6 +16,7 @@ import ru.hogwarts.school.service.AvatarService;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -49,13 +50,18 @@ public class AvatarController {
 
         Path path = Path.of(avatar.getFilePath());
 
-        try(InputStream is = Files.newInputStream(path);
-            OutputStream os = response.getOutputStream()) {
+        try (InputStream is = Files.newInputStream(path);
+             OutputStream os = response.getOutputStream()) {
 
             response.setStatus(200);
             response.setContentType(avatar.getMediaType());
             response.setContentLength((int) avatar.getFileSize());
             is.transferTo(os);
         }
+    }
+
+    @GetMapping
+    public List<Avatar> getPaginatedAvatars(int pageNumber, int pageSize) {
+        return avatarService.getPaginatedAvatars(pageNumber, pageSize);
     }
 }
