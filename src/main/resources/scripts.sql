@@ -1,7 +1,7 @@
 select * from student;
 
 select * from student
-where age between 10 and 20;
+where age between min and max;
 
 select name from student;
 

@@ -52,8 +52,8 @@ public class StudentController {
     }
 
     @GetMapping("findByAgeBetween")
-    public List<Student> findByAgeBetween(int from, int to) {
-        return studentService.findByAgeBetween(from, to);
+    public List<Student> findByAgeBetween(int min, int max) {
+        return studentService.findByAgeBetween(min, max);
     }
 
     @PostMapping(value = "/{studentId}/avatar", consumes = MULTIPART_FORM_DATA_VALUE)
