@@ -64,4 +64,19 @@ public class StudentController {
         avatarService.uploadAvatar(studentId,avatar);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("getStudentCount")
+    public int getStudentCount() {
+        return studentService.getStudentCount();
+    }
+
+    @GetMapping("getAverageAgeStudent")
+    public int getAverageAgeStudent() {
+        return studentService.getAverageAgeStudent();
+    }
+
+    @GetMapping("getLastFiveStudents")
+    public List<Student> getLastFiveStudents() {
+        return studentService.getLastFiveStudents();
+    }
 }

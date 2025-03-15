@@ -1,5 +1,6 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Arrays;
@@ -15,9 +16,12 @@ public class Avatar {
     private Long fileSize;
 
     @Lob
+    @Column(name = "data", columnDefinition = "bytea")
+    @JsonIgnore
     private byte[] data;
 
     @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id")
     private Student student;
 
     public Avatar() {
