@@ -13,8 +13,7 @@ import org.springframework.http.ResponseEntity;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -104,4 +103,5 @@ public class FacultyControllerTestRestTemplate {
         assertEquals(actualFaculty.getName(), facultyForUpdate.getName());
         assertEquals(actualFaculty.getColor(), facultyForUpdate.getColor());
     }
+
 }
