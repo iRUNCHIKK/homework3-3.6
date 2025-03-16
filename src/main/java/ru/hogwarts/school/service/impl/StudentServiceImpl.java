@@ -6,6 +6,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -84,8 +85,78 @@ public class StudentServiceImpl implements StudentService {
     public Double getAverageAgeStudentWithStreams() {
         return studentRepository.findAll()
                 .stream()
-                .mapToInt(Student::getAge)
-                .average()
-                .orElse(0.0);
+                .collect(Collectors.averagingInt(Student::getAge));
+    }
+
+    @Override
+    public void printParallel() {
+
+        List<Student> students = studentRepository.findAll();
+
+        printParallelName(students.get(0));
+        printParallelName(students.get(1));
+
+        new Thread(() -> {
+            printParallelName(students.get(2));
+
+            try {
+                Thread.sleep(1_000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            printParallelName(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printParallelName(students.get(4));
+
+            try {
+                Thread.sleep(1_000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            printParallelName(students.get(5));
+        }).start();
+    }
+    @Override
+    public void printSynchronized() {
+        List<Student> students = studentRepository.findAll();
+
+        printSynchronizedName(students.get(0));
+        printSynchronizedName(students.get(1));
+
+        new Thread(() -> {
+            printSynchronizedName(students.get(2));
+
+            try {
+                Thread.sleep(1_000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            printSynchronizedName(students.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printSynchronizedName(students.get(4));
+
+            try {
+                Thread.sleep(1_000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            printSynchronizedName(students.get(5));
+        }).start();
+    }
+
+    private void printParallelName(Student student) {
+        System.out.println(Thread.currentThread().getName() + ": " + student.getName());
+    }
+
+    private synchronized void printSynchronizedName(Student student) {
+        System.out.println(Thread.currentThread().getName() + ": " + student.getName());
     }
 }
