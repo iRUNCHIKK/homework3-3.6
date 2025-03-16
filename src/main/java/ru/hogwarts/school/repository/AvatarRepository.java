@@ -13,9 +13,9 @@ import java.util.Optional;
 @Repository
 public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 
-    void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException;
+    //void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException;
 
     Optional<Avatar> findByStudentId(Long studentId);
 
-    List<Avatar> getPaginatedAvatar(int pageNumber, int pageSize);
+    //List<Avatar> getPaginatedAvatar(int pageNumber, int pageSize);
 }
