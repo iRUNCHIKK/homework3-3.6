@@ -45,4 +45,9 @@ public class FacultyController {
     public List<Faculty> findByNameIgnoreCaseOrColorIgnoreCase(String query) {
         return facultyService.findByNameIgnoreCaseOrColorIgnoreCase(query, query);
     }
+
+    @GetMapping("getLongestFacultyName")
+    public String getLongestFacultyName() {
+        return facultyService.getLongestFacultyName();
+    }
 }
